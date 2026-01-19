@@ -16,6 +16,15 @@ function App() {
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  // Restore path from 404 redirect
+  useEffect(() => {
+    const redirectPath = sessionStorage.getItem('redirectPath');
+    if (redirectPath) {
+      sessionStorage.removeItem('redirectPath');
+      window.history.replaceState({}, '', redirectPath);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('activePage', activePage);
@@ -58,7 +67,7 @@ function App() {
     setActivePage('bazar');
   };
 
-  const isLoginRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase() === '/login';
+  const isLoginRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('/login');
 
   return (
     <div className="min-h-screen bg-[#0f1729]">
