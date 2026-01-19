@@ -3,11 +3,12 @@ import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import Navbar from './components/Navbar';
 import Bazar from './pages/Bazar';
 import Display from './pages/Display';
+import Coding from './pages/Coding';
 import Login from './pages/Login';
 import { supabase } from './lib/supabase.ts';
 import './App.css';
 
-type Page = 'bazar' | 'display';
+type Page = 'bazar' | 'display' | 'coding';
 
 function App() {
   const [activePage, setActivePage] = useState<Page>(() => {
@@ -67,7 +68,7 @@ function App() {
     setActivePage('bazar');
   };
 
-  const isLoginRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('/login');
+  const isLoginRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase() === '/login';
 
   return (
     <div className="min-h-screen bg-[#0f1729]">
@@ -82,6 +83,7 @@ function App() {
         ) : (
           <>
             {activePage === 'bazar' && !isLoggedIn && <Bazar />}
+            {activePage === 'coding' && !isLoggedIn && <Coding />}
             {(activePage === 'display' || isLoggedIn) && <Display isLoggedIn={isLoggedIn} />}
           </>
         )}

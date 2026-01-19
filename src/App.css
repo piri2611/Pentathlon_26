@@ -63,6 +63,13 @@ body {
 /* Smooth Transitions */
 button {
   transition: all 0.3s ease;
+  background: none;
+}
+
+/* Navbar button styling - no background, only underline */
+nav button {
+  background-color: transparent !important;
+  background: transparent !important;
 }
 
 input:focus {

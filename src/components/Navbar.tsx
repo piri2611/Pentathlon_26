@@ -1,6 +1,6 @@
 interface NavbarProps {
-  activePage: 'bazar' | 'display' | null;
-  onNavigate: (page: 'bazar' | 'display') => void;
+  activePage: 'bazar' | 'display' | 'coding' | null;
+  onNavigate: (page: 'bazar' | 'display' | 'coding') => void;
   isLoggedIn?: boolean;
   onLogout?: () => void;
 }
@@ -23,7 +23,7 @@ const Navbar = ({ activePage, onNavigate, isLoggedIn = false, onLogout }: Navbar
             {!isLoggedIn && (
               <button
                 onClick={() => onNavigate('bazar')}
-                className={`text-lg font-medium transition-all duration-300 pb-2 border-b-2 ${
+                className={`text-lg font-medium transition-all duration-300 pb-2 border-b-2 outline-none focus:outline-none focus:ring-0 ${
                   activePage === 'bazar'
                     ? 'text-cyan-400 border-cyan-400'
                     : 'text-gray-300 hover:text-white border-b-2 border-transparent'
@@ -35,9 +35,24 @@ const Navbar = ({ activePage, onNavigate, isLoggedIn = false, onLogout }: Navbar
 
             {!isLoggedIn && <div className="w-px h-6 bg-white/20"></div>}
 
+            {!isLoggedIn && (
+              <button
+                onClick={() => onNavigate('coding')}
+                className={`text-lg font-medium transition-all duration-300 pb-2 border-b-2 outline-none focus:outline-none focus:ring-0 ${
+                  activePage === 'coding'
+                    ? 'text-cyan-400 border-cyan-400'
+                    : 'text-gray-300 hover:text-white border-b-2 border-transparent'
+                }`}
+              >
+                Coding
+              </button>
+            )}
+
+            {!isLoggedIn && <div className="w-px h-6 bg-white/20"></div>}
+
             <button
               onClick={() => onNavigate('display')}
-              className={`text-lg font-medium transition-all duration-300 pb-2 border-b-2 ${
+              className={`text-lg font-medium transition-all duration-300 pb-2 border-b-2 outline-none focus:outline-none focus:ring-0 ${
                 activePage === 'display'
                   ? 'text-cyan-400 border-cyan-400'
                   : 'text-gray-300 hover:text-white border-b-2 border-transparent'
