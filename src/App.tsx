@@ -68,7 +68,9 @@ function App() {
     setActivePage('bazar');
   };
 
-  const isLoginRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase() === '/login';
+  // Detect /login even when hosted under a subpath (e.g., /Pentathlon_26/login)
+  const isLoginRoute = typeof window !== 'undefined'
+    && window.location.pathname.toLowerCase().endsWith('/login');
 
   return (
     <div className="min-h-screen bg-[#0f1729]">
