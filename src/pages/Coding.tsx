@@ -163,36 +163,36 @@ const Coding = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-6">
-      <div className="bg-[#1a2332] border border-white/10 w-full max-w-5xl p-8 rounded-2xl shadow-xl">
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-3 sm:p-4 md:p-6">
+      <div className="bg-[#1a2332] border border-white/10 w-full max-w-5xl p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-xl md:rounded-2xl shadow-xl">
         {/* Title */}
-        <h2 className="text-3xl font-bold gradient-text mb-2 text-center">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold gradient-text mb-2 text-center">
           {codingChallenges[0].title}
         </h2>
-        <p className="text-gray-300 text-center mb-8">{codingChallenges[0].description}</p>
+        <p className="text-sm sm:text-base text-gray-300 text-center mb-4 sm:mb-6 md:mb-8">{codingChallenges[0].description}</p>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {/* Left - Code Editor */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold text-white">Your Code</h3>
+          <div className="space-y-3 sm:space-y-4">
+            <h3 className="text-base sm:text-lg font-bold text-white">Your Code</h3>
             <textarea
               value={userCode}
               onChange={(e) => setUserCode(e.target.value)}
-              className="w-full h-80 bg-[#0f1729] text-gray-100 p-4 rounded-lg border border-white/20 font-mono text-sm focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 resize-none"
+              className="w-full h-48 sm:h-56 md:h-64 lg:h-80 bg-[#0f1729] text-gray-100 p-3 sm:p-4 rounded-lg border border-white/20 font-mono text-xs sm:text-sm focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 resize-none"
               placeholder="Write your code here..."
             />
             
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
               <button
                 onClick={checkOutput}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold rounded-lg transition-all transform hover:scale-105"
+                className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white text-sm sm:text-base font-bold rounded-lg transition-all transform hover:scale-105"
               >
                 Check Output
               </button>
               <button
                 onClick={handleClearCode}
-                className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg transition-all"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-600 hover:bg-gray-700 text-white text-sm sm:text-base font-bold rounded-lg transition-all"
               >
                 Clear
               </button>
@@ -200,9 +200,9 @@ const Coding = () => {
           </div>
 
           {/* Right - Output Preview */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold text-white">Your Output</h3>
-            <div className="bg-white rounded-lg p-4 h-40 overflow-auto border border-white/20 mb-4">
+          <div className="space-y-3 sm:space-y-4">
+            <h3 className="text-base sm:text-lg font-bold text-white">Your Output</h3>
+            <div className="bg-white rounded-lg p-3 sm:p-4 h-40 sm:h-48 md:h-56 lg:h-40 overflow-auto border border-white/20 mb-3 sm:mb-4">
               {userOutput ? (
                 <iframe
                   srcDoc={userOutput}
@@ -211,12 +211,12 @@ const Coding = () => {
                   sandbox="allow-scripts"
                 />
               ) : (
-                <p className="text-gray-400 text-center py-12">Click "Check Output" to see your result</p>
+                <p className="text-gray-400 text-center text-xs sm:text-sm py-8 sm:py-12">Click "Check Output" to see your result</p>
               )}
             </div>
 
-            <h3 className="text-lg font-bold text-white">Expected Output</h3>
-            <div className="bg-white rounded-lg p-4 h-40 overflow-auto border border-white/20">
+            <h3 className="text-base sm:text-lg font-bold text-white">Expected Output</h3>
+            <div className="bg-white rounded-lg p-3 sm:p-4 h-40 sm:h-48 md:h-56 lg:h-40 overflow-auto border border-white/20">
               <iframe
                 srcDoc={codingChallenges[0].expectedOutput}
                 className="w-full h-full border-0"
@@ -229,28 +229,28 @@ const Coding = () => {
 
         {/* Results Section */}
         {showResult && (
-          <div className={`mt-8 border-2 rounded-lg p-6 ${getStatusColor()}`}>
-            <h3 className="text-xl font-bold text-white mb-4">{getStatusText()}</h3>
+          <div className={`mt-6 sm:mt-8 border-2 rounded-lg p-4 sm:p-6 ${getStatusColor()}`}>
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-4">{getStatusText()}</h3>
             
             {matchStatus === 'perfect' && (
               <div className="text-green-300 font-semibold text-center">
-                <p className="text-4xl mb-2">✓ 100%</p>
-                <p className="text-lg">Congratulations! Your code matches perfectly!</p>
+                <p className="text-3xl sm:text-4xl mb-2">✓ 100%</p>
+                <p className="text-base sm:text-lg">Congratulations! Your code matches perfectly!</p>
               </div>
             )}
 
             {matchStatus === 'partial' && (
               <div className="text-yellow-300">
-                <p className="font-semibold mb-3">Match Progress:</p>
-                <div className="w-full bg-yellow-500/20 rounded-full h-4 mb-4">
+                <p className="font-semibold mb-3 text-sm sm:text-base">Match Progress:</p>
+                <div className="w-full bg-yellow-500/20 rounded-full h-3 sm:h-4 mb-4">
                   <div
-                    className="bg-yellow-500 h-4 rounded-full transition-all duration-500"
+                    className="bg-yellow-500 h-3 sm:h-4 rounded-full transition-all duration-500"
                     style={{ width: `${matchPercentage}%` }}
                   />
                 </div>
-                <p className="text-center font-bold text-2xl">{matchPercentage}%</p>
+                <p className="text-center font-bold text-2xl sm:text-3xl">{matchPercentage}%</p>
                 {timeElapsed >= 120 && (
-                  <p className="text-sm mt-3 text-yellow-200 text-center">
+                  <p className="text-xs sm:text-sm mt-3 text-yellow-200 text-center">
                     Keep trying! You're close to the solution.
                   </p>
                 )}
@@ -259,15 +259,15 @@ const Coding = () => {
 
             {matchStatus === 'error' && (
               <div className="text-red-300">
-                <p className="font-semibold mb-3">Your Match:</p>
-                <div className="w-full bg-red-500/20 rounded-full h-4 mb-4">
+                <p className="font-semibold mb-3 text-sm sm:text-base">Your Match:</p>
+                <div className="w-full bg-red-500/20 rounded-full h-3 sm:h-4 mb-4">
                   <div
-                    className="bg-red-500 h-4 rounded-full"
+                    className="bg-red-500 h-3 sm:h-4 rounded-full"
                     style={{ width: `${Math.max(matchPercentage, 10)}%` }}
                   />
                 </div>
-                <p className="text-center font-bold text-2xl">{matchPercentage}%</p>
-                <p className="text-sm mt-3 text-center">Compare your code with the expected output above.</p>
+                <p className="text-center font-bold text-2xl sm:text-3xl">{matchPercentage}%</p>
+                <p className="text-xs sm:text-sm mt-3 text-center">Compare your code with the expected output above.</p>
               </div>
             )}
           </div>

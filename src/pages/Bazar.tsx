@@ -9,6 +9,8 @@ const Bazar = () => {
     return (saved as BazarStep) || 'form';
   });
 
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const [schoolName, setSchoolName] = useState(() => {
     return localStorage.getItem('schoolName') || '';
   });
@@ -22,6 +24,41 @@ const Bazar = () => {
     localStorage.setItem('bazarSessionToken', token);
     return token;
   });
+
+  const toggleFullscreen = async () => {
+    try {
+      const elem = document.documentElement;
+      if (!isFullscreen) {
+        // Request fullscreen
+        if (elem.requestFullscreen) {
+          await elem.requestFullscreen();
+        } else if ((elem as any).webkitRequestFullscreen) {
+          await (elem as any).webkitRequestFullscreen();
+        } else if ((elem as any).mozRequestFullScreen) {
+          await (elem as any).mozRequestFullScreen();
+        } else if ((elem as any).msRequestFullscreen) {
+          await (elem as any).msRequestFullscreen();
+        }
+        setIsFullscreen(true);
+      } else {
+        // Exit fullscreen
+        if (document.fullscreenElement || (document as any).webkitFullscreenElement || (document as any).mozFullScreenElement) {
+          if (document.exitFullscreen) {
+            await document.exitFullscreen();
+          } else if ((document as any).webkitExitFullscreen) {
+            await (document as any).webkitExitFullscreen();
+          } else if ((document as any).mozCancelFullScreen) {
+            await (document as any).mozCancelFullScreen();
+          } else if ((document as any).msExitFullscreen) {
+            await (document as any).msExitFullscreen();
+          }
+        }
+        setIsFullscreen(false);
+      }
+    } catch (err) {
+      console.error('Fullscreen toggle error:', err);
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem('bazarStep', step);
@@ -203,17 +240,17 @@ const Bazar = () => {
 
   if (step === 'form') {
     return (
-      <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-6">
-        <div className="bg-[#1a2332] border border-white/10 w-full max-w-md p-8 rounded-2xl shadow-xl">
-          <h2 className="text-3xl font-bold gradient-text mb-6 text-center">
+      <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-3 sm:p-4 md:p-6">
+        <div className="bg-[#1a2332] border border-white/10 w-full max-w-md p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-xl md:rounded-2xl shadow-xl">
+          <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold gradient-text mb-4 sm:mb-6 text-center">
             Welcome to Bazar
           </h2>
           
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
               <label 
                 htmlFor="schoolName" 
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-xs sm:text-sm font-medium text-gray-300 mb-2"
               >
                 School Name
               </label>
@@ -222,7 +259,7 @@ const Bazar = () => {
                 type="text"
                 value={schoolName}
                 onChange={(e) => setSchoolName(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-[#0f1729] border border-white/20 text-white placeholder-gray-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all outline-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-[#0f1729] border border-white/20 text-white text-sm sm:text-base placeholder-gray-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all outline-none"
                 placeholder="Enter your school name"
               />
             </div>
@@ -230,7 +267,7 @@ const Bazar = () => {
             <button
               onClick={handleNext}
               disabled={!schoolName.trim()}
-              className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-300 ${
+              className={`w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base font-semibold text-white transition-all duration-300 ${
                 schoolName.trim()
                   ? 'bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg hover:scale-105 neon-glow'
                   : 'bg-gray-300 cursor-not-allowed'
@@ -246,21 +283,29 @@ const Bazar = () => {
 
   if (step === 'buzzer') {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-[#0f1729] pt-20">
-        <div className="text-center">
+      <div className="fixed inset-0 flex items-center justify-center bg-[#0f1729]" style={{ paddingTop: isFullscreen ? '0' : '80px' }}>
+        <div className="text-center px-4">
           <button
             onClick={handleBuzzerClick}
-            className="w-80 h-80 rounded-full transition-all duration-300 cursor-pointer bg-gradient-to-br from-red-400 to-red-600 hover:scale-110 hover:shadow-xl shadow-lg shadow-red-400/30"
+            className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full transition-all duration-300 cursor-pointer bg-gradient-to-br from-red-400 to-red-600 hover:scale-110 hover:shadow-xl shadow-lg shadow-red-400/30"
             style={{
               boxShadow: '0 20px 40px rgba(239, 68, 68, 0.3)',
               cursor: 'pointer'
             }}
           >
-            <span className="text-white text-5xl font-bold">
+            <span className="text-white text-3xl sm:text-4xl md:text-5xl font-bold">
               BUZZ
             </span>
           </button>
         </div>
+        {/* Fullscreen Toggle Button - Bottom Right Corner */}
+        <button
+          onClick={toggleFullscreen}
+          className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 hover:scale-110 transition-all duration-300 shadow-lg shadow-blue-400/30 flex items-center justify-center text-white font-bold text-lg"
+          title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+        >
+          {isFullscreen ? '✕' : '⛶'}
+        </button>
       </div>
     );
   }

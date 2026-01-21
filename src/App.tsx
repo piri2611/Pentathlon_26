@@ -31,6 +31,13 @@ function App() {
     localStorage.setItem('activePage', activePage);
   }, [activePage]);
 
+  // Prevent guests from landing on display if it was previously saved
+  useEffect(() => {
+    if (!isLoggedIn && activePage === 'display') {
+      setActivePage('bazar');
+    }
+  }, [isLoggedIn, activePage]);
+
   useEffect(() => {
     const syncSession = async () => {
       // Check if user is already logged in
@@ -66,6 +73,8 @@ function App() {
     await supabase.auth.signOut();
     setIsLoggedIn(false);
     setActivePage('bazar');
+    // Force guests to the login portal after logout
+    window.history.pushState({}, '', '/login');
   };
 
   // Detect /login even when hosted under a subpath (e.g., /Pentathlon_26/login)
@@ -74,8 +83,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#0f1729]">
-      <Navbar activePage={isLoginRoute ? null : activePage} onNavigate={handleNavigate} isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-      <main className="pt-20">
+      {!isLoginRoute && <Navbar activePage={activePage} onNavigate={handleNavigate} isLoggedIn={isLoggedIn} onLogout={handleLogout} />}
+      <main className={'pt-20'}>
         {isLoginRoute ? (
           <Login onLoginSuccess={() => {
             setIsLoggedIn(true);
@@ -86,7 +95,7 @@ function App() {
           <>
             {activePage === 'bazar' && !isLoggedIn && <Bazar />}
             {activePage === 'coding' && !isLoggedIn && <Coding />}
-            {(activePage === 'display' || isLoggedIn) && <Display isLoggedIn={isLoggedIn} />}
+            {activePage === 'display' && isLoggedIn && <Display isLoggedIn={isLoggedIn} />}
           </>
         )}
       </main>
